@@ -16,20 +16,34 @@
 
         // Load a specific category by short_name
         function loadMenuItems(short_name) {
-            const category = categories.find(c => c.short_name === short_name)
-            if (!category) return
+    let content = ""
+    let title = ""
 
-            document.getElementById("category-title").textContent = category.name
-            document.getElementById("category-content").innerHTML = `
-                <div class="col-12 menu-section bg-dark text-white p-4">
-                    <p>${category.content}</p>
-                </div>
-            `
+    if (short_name === "ALL") {
+        title = "Our Full Menu"
+        content = categories.map(category => `
+            <div class="col-12 menu-section bg-dark text-white p-4 mb-3 rounded">
+                <h3 class="text-center">${category.name}</h3>
+                <p>${category.content}</p>
+            </div>
+        `).join("")
+    } else {
+        const category = categories.find(c => c.short_name === short_name)
+        if (!category) return
+        title = category.name
+        content = `
+            <div class="col-12 menu-section bg-dark text-white p-4 rounded">
+                <p>${category.content}</p>
+            </div>
+        `
+    }
 
-            document.getElementById("page-home").style.display = "none"
-            document.getElementById("page-map").style.display = "none"
-            document.getElementById("page-category").style.display = "block"
-        }
+    document.getElementById("category-title").textContent = title
+    document.getElementById("category-content").innerHTML = content
+    document.getElementById("page-home").style.display = "none"
+    document.getElementById("page-map").style.display = "none"
+    document.getElementById("page-category").style.display = "block"
+}
 
         // Pick a random category and load it
         function loadRandomSpecials() {
